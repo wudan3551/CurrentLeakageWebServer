@@ -1,0 +1,129 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  	<meta charset="utf-8">
+  	<title>剩余电流实时数据显示</title>
+	<!-- style sheet added for temporary styling -->
+	<style>
+		body {
+			height : 100%;
+			width : 100%;
+			margin : 0;
+			padding : 0;
+			display : block;
+			font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+			background-color:#7CAEEC;
+		}
+		.dataTables_wrapper {
+			padding-top:40px;
+			margin:auto;
+			width: 80%;
+		}
+		#controlSector {
+			margin: auto;
+			padding-top: 40px;
+			width: 60%;
+		}
+		.dateSelectText {
+			font-size: 20px;
+		}
+		#body-background {
+		background: url(/images/seugif.gif);
+		width: 100%;
+		}
+		#footer {
+			clear:both;
+			text-align:center;
+			padding:5px;
+		}
+	</style>
+
+	<!-- datatable related local css sorce file-->
+	<link rel="stylesheet" href="/DataTables-1.10.7/media/css/jquery.dataTables.min.css">
+  	<!-- datepicker related local css source file-->
+  	<link rel="stylesheet" href="/jquery/jquery-ui-1.11.4.custom/jquery-ui.theme.min.css">
+  	<link rel="stylesheet" href="/jquery/jquery-ui-1.11.4.custom/jquery-ui.min.css">
+	<!-- datepicker related local js source file -->
+  	<script src="/jquery/jquery-ui-1.11.4.custom/external/jquery/jquery.js"></script>
+  	<script src="/jquery/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
+	<!-- datatable related local js source file-->
+  	<script src="/DataTables-1.10.7/media/js/jquery.dataTables.js"></script>
+
+  	
+  	<script>
+ 	$("document").ready(function() {
+		
+		//initialize datatable when loading html
+		$( "#datashowing" ).dataTable();
+
+		$( "#body-wraper" ).css("background-color","#ffffff")
+							.css("opacity",0.8);
+
+		//load date when button click happen
+		$("#submitData").click(function(){
+			$( "#datashowing" ).dataTable({
+				"ajax": {
+					"url": "/demo/demo.php",
+					"dataSrc": "" //this means a data source is a array
+				},
+				"columns": [
+					{ "data": "id"},
+					{ "data": "current"},
+					{ "data": "voltage"}
+				],
+				"order": [0,'asc'],//ascending order of time
+				"displayLength": 25,
+				"bDestroy": true,//destroy old table before new one
+				"deferRender": true,//
+				"autoWidth": true,
+			  	"columnDefs": [{ className: "dt-center", "targets": [ 0,1,2 ] }]//make column align center
+			});
+			//indicate command
+			//$( "#commandDisplay" ).html("dateData: " + $( "#datepicker" ).datepicker({dateFormat: 'yy-mm-dd'}).val() + " timeData: " +  $( "#timeSelect" ).val());
+		});
+	});
+  	</script>
+</head>
+<body>
+<div id="body-background" "height"="100%"> 
+<div id="body-wraper">
+	<div id="header">
+		<div id="logo">
+			<a href="/index.html">
+				<img src="/images/seu_head.jpg" alt="回首页" title="回首页">
+			</a>
+		</div>
+	</div>
+
+	<div id="controlSector">
+		<input type="button" value="查询实时数据" id="submitData" class="dateSelectText"></input>
+	</div>
+
+	<div class="dataTables_wrapper" cellspacing="0" width="60%">
+		<table id="datashowing" class="stripe hover order-column cell-border">
+			<thead>
+				<tr>
+					<th>用户编号</th>
+					<th>漏电流值</th>
+					<th>电压值</th>
+				</tr>
+			</thead>
+			<tfoot>
+				<tr>
+					<th>用户编号</th>
+					<th>漏电流值</th>
+					<th>电压值</th>
+				</tr>
+			</tfoot>
+		</table>
+		<p id="commandDisplay">
+		</p>
+	</div>
+</div>
+</div>
+<div id="footer">
+Copyright@SEU-AMS Lab
+</div>
+</body>
+</html>

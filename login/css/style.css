@@ -1,0 +1,62 @@
+/* Below line is used for online Google font */
+/* @import url(http://fonts.googleapis.com/css?family=Droid+Serif); */
+body {
+	background-color: #7CAEEC;
+}
+h2{
+	text-align: center;
+	font-size: 24px;
+}
+hr{
+	margin-bottom: 30px;
+}
+div.container{
+	width: 960px;
+	height: 610px;
+	margin:50px auto;
+	font-family: Arial, Helvetica, sans-serif;
+	position:relative;
+}
+div.main{
+	width: 320px;
+	margin-top: 120px;
+	margin-left: auto;
+	margin-right: auto;
+	float:center;
+	padding: 10px 55px 40px;
+	background-color: #4178AF;
+	border: 5px solid #4178AF;
+	box-shadow: 0 0 10px;
+	border-radius: 2px;
+	font-size: 13px;
+}
+input[type=text],[type=password] {
+	width: 97.7%;
+	height: 34px;
+	padding-left: 5px;
+	margin-bottom: 20px;
+	margin-top: 8px;
+	box-shadow: 0 0 5px #00F5FF;
+	border: 1px solid #6CA9AC;
+	color: #4f4f4f;
+	font-size: 18px;
+}
+label{
+	color: #130C0C;
+	font-size: 18px;
+	font-weight: bold;
+}
+#login {
+	width: 100%;
+	background: linear-gradient(#1567e2 5%, #1B4C96 100%);
+	border: 1px solid #0F799E;
+	font-size: 20px;
+	margin-top: 15px;
+	padding: 8px;
+	font-weight: bold;
+	cursor: pointer;
+	text-shadow: 0px 1px 0px #13506D;
+}
+#login:hover{
+	background: linear-gradient(#1489D6 5%, #0B75A5 100%);
+}

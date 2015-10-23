@@ -1,0 +1,72 @@
+<html>
+	<head>
+  		<meta charset="utf-8">
+		<title>Chart Test</title>
+		
+		<style>
+			#chartWraper {
+				width : 50%;
+				margin: auto;
+			}
+		</style>
+
+		<!-- datatable related local css sorce file-->
+		<link rel="stylesheet" href="/DataTables-1.10.7/media/css/jquery.dataTables.min.css">
+  		<!-- datepicker related local css source file-->
+  		<link rel="stylesheet" href="/jquery/jquery-ui-1.11.4.custom/jquery-ui.theme.min.css">
+  		<link rel="stylesheet" href="/jquery/jquery-ui-1.11.4.custom/jquery-ui.min.css">
+		<!-- datepicker related local js source file -->
+  		<script src="/jquery/jquery-ui-1.11.4.custom/external/jquery/jquery.js"></script>
+  		<script src="/jquery/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
+		<!-- datatable related local js source file-->
+  		<script src="/DataTables-1.10.7/media/js/jquery.dataTables.js"></script>
+		<!-- chart related js lib -->
+		<script src="/Chart.js/Chart.min.js"></script>
+
+		<script>
+			$("document").ready(function(){
+				//Step 1 : get the canvas
+				var ctx = $("#voltageToday").get(0).getContext("2d");
+
+				var sourceData = [220,230,225,220,215];
+				// data(y axis value) of the Line chart
+				var data = {
+					labels: ["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00",
+							 "11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00",
+							 "22:00","23:00","24:00"],
+					datasets: [
+						{
+						data: sourceData
+						}
+					]
+				};
+				// options of the line chart
+				var options = {
+						scaleFontSize: 18,
+						scaleBeginAtZero : true,
+						scaleShowGridLines : false,
+						tooltipEvents: ["mousemove"],//bind event to indicate tooltip
+						tooltipFontSize: 20,
+						tooltipFillColor: "rgba(255,0,0,0.8)",
+						scaleGridLineColor : "rgba(0,0,0,.05)",
+						responsive: true
+					};
+				// Step 2 : new a Line Chart Object
+				var myLineChart = new Chart(ctx).Line(data,options);
+				
+				//console.log(myLineChart.datasets[0].points[1].value)
+				
+				// a ajax 
+				// refresh data of the chart
+				//myLineChart.datasets[0].points[2].value = 210;
+				myLineChart.addData([250],"15:00");
+				myLineChart.update();
+			});
+		</script>
+	</head>
+	<body>
+		<div id="chartWraper">
+			<canvas id="voltageToday" width="2" height="1"></canvas>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,165 @@
+i<!doctype html>
+
+<html lang="en">
+<head>
+  	<meta charset="utf-8">
+  	<title>剩余电流数据显示平台</title>
+	<!-- style sheet added for temporary styling -->
+	<style>
+		.dataTables_wrapper {
+			padding-top:40px;
+			margin:auto;
+			width: 80%;
+		}
+		#controlSector {
+			margin: auto;
+			padding-top: 40px;
+			width: 60%;
+		}
+		#datepicker1 {
+			font-size: 20px;
+			width: 200px;
+			height: 30px;
+			border: 2px solid;
+			padding: 6px;
+		}
+		#datepicker2 {
+			font-size: 20px;
+			width: 200px;
+			height: 30px;
+			border: 2px solid;
+			padding: 6px;
+		}
+		.dateSelectText {
+			font-size: 20px;
+		}
+	</style>
+
+	<!-- datatable related local css sorce file-->
+	<link rel="stylesheet" href="/DataTables-1.10.7/media/css/jquery.dataTables.min.css">
+  	<!-- datepicker related local css source file-->
+  	<link rel="stylesheet" href="/jquery/jquery-ui-1.11.4.custom/jquery-ui.theme.min.css">
+  	<link rel="stylesheet" href="/jquery/jquery-ui-1.11.4.custom/jquery-ui.min.css">
+	<!-- datepicker related local js source file -->
+  	<script src="/jquery/jquery-ui-1.11.4.custom/external/jquery/jquery.js"></script>
+  	<script src="/jquery/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
+	<!-- datatable related local js source file-->
+  	<script src="/DataTables-1.10.7/media/js/jquery.dataTables.js"></script>
+
+  	
+  	<script>
+ 	$("document").ready(function() {
+		$( "#datepicker1" ).datepicker({
+			dateFormat:"yy-mm-dd",
+			monthNames:["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"],
+			altFormat: "yy-mm-dd"
+		});
+		$( "#datepicker1" ).datepicker('setDate',new Date());//set default date of start date
+		$( "#datepicker2" ).datepicker({
+			dateFormat:"yy-mm-dd",
+			monthNames:["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"],
+			altFormat: "yy-mm-dd"
+		});
+		$( "#datepicker2" ).datepicker('setDate',new Date());//set default date of end date
+		
+		//initialize datatable when loading html
+		$( "#datashowing" ).dataTable();
+
+		//$( "#submitData" ).click(function(){
+		//	var currentDate=$( "#datepicker" ).datepicker({dateFormat: 'yy-mm-dd'}).val();
+		//	currentDate += $( "#timeSelect" ).val();
+		//	$( "#indicateSector" ).html(currentDate);
+		//});
+
+		//load data when loading page
+
+		$( "#datashowing" ).dataTable({
+			"ajax": {
+				"url": "/DateDurationJson.php",
+				"data": {startData: $( "#datepicker1" ).datepicker({dateFormat: 'yy-mm-dd'}).val() , endData: $( "#datepicker2" ).datepicker({dateFormat: "yy-mm-dd"}).val()}, 
+				"dataSrc": ""
+			},
+			"columns": [
+				{ "data": "id"},
+				{ "data": "current"},
+				{ "data": "voltage"},
+				{ "data": "d"},
+				{ "data": "t"}
+			],
+			"order": [3,'desc'],//descending order of time
+			"bDestroy": true,//destroy old table before new on
+			"deferRender": true,//
+			"autoWidth": true,
+			"columnDefs": [{ className: "dt-center", "targets": [ 0,1,2,3,4 ] }]//make column align center
+		});
+		//set backgroud image
+		$( "#body-background" ).css("background-image","url(/images/SEU.jpg)")
+					.css("width","100%")
+					.css("heigth","100%");
+		$( "#body-wraper" ).css("background-color","#ffffff")
+							.css("opacity",0.8);
+
+		//load date when button click happen
+		$("#submitData").click(function(){
+			$( "#datashowing" ).dataTable({
+				"ajax": {
+					"url": "/DateDurationJson.php",
+					"data": {startData: $( "#datepicker1" ).datepicker({dateFormat: 'yy-mm-dd'}).val() , endData: $( "#datepicker2" ).datepicker({dateFormat: "yy-mm-dd"}).val()}, 
+					"dataSrc": ""
+				},
+				"columns": [
+					{ "data": "id"},
+					{ "data": "current"},
+					{ "data": "voltage"},
+					{ "data": "d"},
+					{ "data": "t"}
+				],
+				"order": [3,'desc'],//descending order of time
+				"bDestroy": true,//destroy old table before new on
+				"deferRender": true,//
+				"autoWidth": true,
+			  	"columnDefs": [{ className: "dt-center", "targets": [ 0,1,2,3,4 ] }]//make column align center
+			});
+			//indicate command
+			//$( "#commandDisplay" ).html("dateData: " + $( "#datepicker" ).datepicker({dateFormat: 'yy-mm-dd'}).val() + " timeData: " +  $( "#timeSelect" ).val());
+		});
+	});
+  	</script>
+</head>
+<body>
+<div id="body-background" "height"="100%"> 
+<div id="body-wraper">
+	<div id="controlSector">
+		<a class="dateSelectText">起始日期: </a><input type="text" id="datepicker1" class="selector">
+		<a class="dateSelectText">终止日期：</a><input type="text" id="datepicker2" class="selector">
+		<input type="button" value="查询数据" id="submitData" class="dateSelectText"></input>
+	</div>
+
+	<div class="dataTables_wrapper" cellspacing="0" width="60%">
+		<table id="datashowing" class="stripe hover order-column cell-border">
+			<thead>
+				<tr>
+					<th>用户编号</th>
+					<th>漏电流</th>
+					<th>电压</th>
+					<th>日期</th>
+					<th>时间</th>
+				</tr>
+			</thead>
+			<tfoot>
+				<tr>
+					<th>用户编号</th>
+					<th>漏电流</th>
+					<th>电压</th>
+					<th>日期</th>
+					<th>时间</th>
+				</tr>
+			</tfoot>
+		</table>
+		<p id="commandDisplay">
+		</p>
+	</div>
+</div>
+</div>
+</body>
+</html>

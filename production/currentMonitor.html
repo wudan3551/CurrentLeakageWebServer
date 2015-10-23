@@ -1,0 +1,261 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  	<meta charset="utf-8">
+  	<title>电压监测数据</title>
+	<!-- style sheet added for temporary styling -->
+	<style>
+		body {
+			height : 100%;
+			width : 100%;
+			margin : 0;
+			padding : 0;
+			display : block;
+			font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+			background-color:#7CAEEC;
+		}
+		.RowSectionWrapper {
+			width: 100%;
+			background-color: #66B1CA;
+		}
+		.dataTables_wrapper {
+			padding-top:40px;
+			margin:auto;
+			border: 1px solid;
+			border-color: #7CAEEC;
+			width: 80%;
+			background-color : #7CAEEC;
+		}
+		#controlSector {
+			margin: auto;
+			padding-top:20px;
+			padding-bottom:15px;
+			border: 1px solid;
+			border-color: #70C7EF;
+			width: 80%;
+			background-color : #7CAEEC;
+		}
+		#datepicker1 {
+			font-size: 20px;
+			width: 200px;
+			height: 30px;
+			border: 2px solid;
+			padding-left: 6px;
+		}
+		.dateSelectText {
+			font-size: 20px;
+			padding-left: 70px;
+		}
+		#submitData {
+			font-size: 20px;
+			margin-left: 350px;
+			padding-top:10px;
+			padding-bottom:10px;
+		}
+		#chartWraper {
+			width: 50%;
+			margin: auto;
+			padding-top: 20px;
+		}
+		#header{
+			margin: 0px;
+			padding:0px;
+			border:5px solid;
+			border-color: #73B7C5;
+			height: 130px;
+			width: 100%;
+			background-color: #7CAEEC;
+		}
+		#userInfo {
+			height: 40px;
+		}
+		#userInfo div {
+			float:right;
+		}
+		#logout{
+			padding-left:10px;
+			padding-right:10px;
+		}
+		#logoutBox:hover {
+			background-color: #4A91E9;
+		}
+		.welCom{
+			margin-top: 10px;
+			margin-bottom: 10px;
+			margin-right: 5px;
+		}
+		#logo {
+			height:121px;
+			width:600px;
+			margin:auto;
+		}
+		#footer {
+			width: 80%;
+			margin-top: 20px;
+			margin-bottom: 20px;
+			margin-left: auto;
+			margin-right: auto;
+			clear:both;
+			text-align:center;
+			padding:5px;
+		}
+	</style>
+
+  	<!-- datepicker related local css source file-->
+  	<link rel="stylesheet" href="/jquery/jquery-ui-1.11.4.custom/jquery-ui.theme.min.css">
+  	<link rel="stylesheet" href="/jquery/jquery-ui-1.11.4.custom/jquery-ui.min.css">
+	<!-- datepicker related local js source file -->
+  	<script src="/jquery/jquery-ui-1.11.4.custom/external/jquery/jquery.js"></script>
+  	<script src="/jquery/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
+	<!-- chart related js lib -->
+	<script src="/Chart.js/Chart.min.js"></script>
+  	<script src="/production/checkLogin.js"></script>
+  	
+</head>
+<body>
+<div id="body-wraper">
+	<div id="header">
+		<div id="logo">
+			<a href="/index.html">
+				<img src="/images/seu_head.jpg" alt="回首页" title="回首页">
+			</a>
+		</div>
+	</div>
+	<div id="userInfo">
+		<a href="/login/logout.html">
+		<div id="logoutBox"><div class="welCom" id="logout">退出登录</div>
+		</div>
+		</a>
+		<div class="welCom" id="userName">anounimous</div>
+		<div class="welCom">欢迎您：</div>
+	</div>
+	
+	<div class="RowSectionWrapper">
+		<div id="controlSector">
+			<a class="dateSelectText">选择日期: </a><input type="text" id="datepicker1" class="selector">
+			<input type="button" value="查询电压监测数据" id="submitData"></input>
+		</div>
+	</div>
+	<!-- sections that contain line chart -->
+	<div class="RowSectionWrapper">
+		<div id="chartWraper">
+			<canvas id="voltageToday" width="2" height="1"></canvas>
+		</div>
+	</div>
+</div>
+<div id="footer">
+Copyright@SEU-AMS Lab
+</div>
+	<script>
+		/* Make Chart Related Variable Global */
+		//Step 1 : get the canvas
+		var ctx = $("#voltageToday").get(0).getContext("2d");
+		// data(y axis value) of the Line chart
+		var data = {
+			//labels: ["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00",
+			//		     "11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00",
+			//		     "22:00","23:00",],
+			labels: [],
+			datasets: [
+						{
+							//data: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+							data : [],
+							fillColor: "#000000"
+						}
+					]
+			};
+		options  = {
+			scaleFontSize: 18,
+			scaleFontColor: "#000000",
+			scaleBeginAtZero : true,
+			scaleShowGridLines : false,
+			animation: true,
+			animationSteps : 10,
+			animationEasing: "easeInOutElastic",
+			tooltipEvents: ["mousemove","touchstart","touchmove"],
+			tooltipFontSize: 20,
+			tooltipFillColor: "rgba(55,32,12,0.8)",
+			tooltipTemplate: "<%=value%><%if (label){%> VAC@ <%=label%><%}%>",
+			scaleGridLineColor : "rgba(0,0,0,.5)",
+			datasetFill: false,	//don't fill the down-side of the line chart
+			responsive: true
+		};
+		// Step 2 : new a Line Chart Object
+		var myLineChart = new Chart(ctx).Line(data,options);//empty option (use default options)
+ 	
+	$("document").ready(function() {
+		//check login or not
+		var val = getCookie("UserName");
+		//console.log(val);
+		if(val == "")
+			window.location.replace("/login/login.html");
+		//replace anounimous with real user name	
+		$( "#userName" ).html(val);
+		
+		$( "#datepicker1" ).datepicker({
+			dateFormat:"yy-mm-dd",
+			monthNames:["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"],
+			altFormat: "yy-mm-dd"
+		});
+		$( "#datepicker1" ).datepicker('setDate',new Date());//set default date of start date
+		
+		/* Function to refresh new data to the line chart */
+		function refreshLineChart(tempData,tempLabel) {
+			/* remove previous line chart */
+			var len = myLineChart.datasets[0].points.length;
+			//console.log(len);
+			for(var i = 0;i < len;++i){
+				myLineChart.removeData();
+			}
+			/* fill new data */
+			for(var i = 0;i < tempData.length;++i){
+				myLineChart.addData([tempData[i] ], tempLabel[i]);
+			}
+			myLineChart.update();
+		}
+		
+		/* load data when load a page */
+		$.ajax({
+			meathod: "POST",
+			url: "/production/GetVoltageData.php",
+			data: {SelectDate: $( "#datepicker1" ).datepicker({dateFormat: 'yy-mm-dd'}).val()} 
+			}).done(function(theData){
+				var temp = JSON.parse(theData);
+
+				var tempData = [];
+				var tempLabel = [];
+				for(var i = 0;i < temp.length;++i) {
+					tempData.push(temp[i].voltage);
+					tempLabel.push(temp[i].t);
+				}
+				//console.log(tempData);//for debug
+				//console.log(tempLabel);
+				refreshLineChart(tempData,tempLabel);//decode json data
+			});
+
+		/* Bound a ajax to button click */
+		/* refresh data of the chart */
+		$("#submitData").click(function(){
+		$.ajax({
+			meathod: "POST",
+			url: "/production/GetVoltageData.php",
+			data: {SelectDate: $( "#datepicker1" ).datepicker({dateFormat: 'yy-mm-dd'}).val()} 
+			}).done(function(theData){
+				var temp = JSON.parse(theData);
+
+				var tempData = [];
+				var tempLabel = [];
+				for(var i = 0;i < temp.length;++i) {
+					tempData.push(temp[i].voltage);
+					tempLabel.push(temp[i].t);
+				}
+				//console.log(tempData);//for debug
+				//console.log(tempLabel);
+				refreshLineChart(tempData,tempLabel);//decode json data
+			});
+		});
+	});
+  	</script>
+</body>
+</html>

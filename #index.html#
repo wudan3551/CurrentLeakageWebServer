@@ -1,0 +1,148 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  	<meta charset="utf-8">
+  	<title>剩余电流数据显示平台</title>
+	<!-- style sheet added for temporary styling -->
+	<style>
+		body {
+			height : 100%;
+			width : 100%;
+			margin : 0;
+			padding : 0;
+			display : block;
+			font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+			background-color:#7CAEEC;
+		}
+		.dataTables_wrapper {
+			padding-top:40px;
+			margin:auto;
+			border: 1px solid;
+			border-color: #7CAEEC;
+			width: 80%;
+			background-color : #7CAEEC;
+		}
+		#header{
+			margin: 0px;
+			padding:0px;
+			border:5px solid;
+			border-color: #73B7C5;
+			height: 130px;
+			width: 100%;
+			background-color: #7CAEEC;
+		}
+		#logo {
+			height:121px;
+			width:600px;
+			margin:auto;
+		}
+		.SelectZone {
+			height: 90px;
+			margin: auto;
+		}
+		#imageButton1 , #imageButton2 , #imageButton3 {
+			border: 2px solid;
+			border-color : #7CAEEC;
+			width: 252px;
+		}
+		.SelectZoneRow {
+			height: 50px;
+			width: 250px;
+			padding-top: 20px;
+			padding-bottom: 20px;
+			margin: auto;
+		}
+		#footer {
+			width: 80%;
+			margin-top: 20px;
+			margin-bottom: 20px;
+			margin-left: auto;
+			margin-right: auto;
+			clear:both;
+			text-align:center;
+			padding:5px;
+		}
+	</style>
+
+  	<!-- datepicker related local css source file-->
+  	<link rel="stylesheet" href="/jquery/jquery-ui-1.11.4.custom/jquery-ui.theme.min.css">
+  	<link rel="stylesheet" href="/jquery/jquery-ui-1.11.4.custom/jquery-ui.min.css">
+	<!-- datepicker related local js source file -->
+  	<script src="/jquery/jquery-ui-1.11.4.custom/external/jquery/jquery.js"></script>
+  	<script src="/jquery/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
+  	
+  	<script>
+ 	$("document").ready(function() {
+		$("#imageButton1").hover(
+			function(){
+				$(this).css({"border": "2px solid",
+								      "border-color": "#000000"});
+			},
+			function(){
+				$(this).css({"border": "2px solid",
+								      "border-color": "#7CAEEC"});
+			}
+		);
+		$("#imageButton2").hover(
+			function(){
+				$(this).css({"border": "2px solid",
+								      "border-color": "#000000"});
+			},
+			function(){
+				$(this).css({"border": "2px solid",
+								      "border-color": "#7CAEEC"});
+			}
+		);
+		$("#imageButton3").hover(
+			function(){
+				$(this).css({"border": "2px solid",
+								      "border-color": "#000000"});
+			},
+			function(){
+				$(this).css({"border": "2px solid",
+								      "border-color": "#7CAEEC"});
+			}
+		);
+	});
+  	</script>
+
+</head>
+<body>
+<div id="body-wraper">
+	<div id="header">
+	<div id="logo">
+			<a href="/index.html">
+				<img src="/images/seu_head.jpg" alt="回首页" title="回首页">
+			</a>
+		</div>
+	</div>
+	<div id="SelectZone">
+		<div class="SelectZoneRow">
+			<div id="imageButton1">
+				<a href="/production/HistoryData.html">历史数据<!--	<img src="images/HistoryData.jpg" alt="历史数据" title="历史数据"> -->
+</a>
+			</div>
+		</div>
+		<div class="SelectZoneRow">
+			<div id="imageButton2">
+				<a href="/production/RealTimeData.html">
+					<img src="images/RealTimeData.jpg" alt="实时数据" title="实时数据">
+				</a>
+			</div>
+		</div>
+		<div class="SelectZoneRow">
+			<div id="imageButton3">
+				<a href="/production/currentMonitor.html">
+					<img src="images/currentMonitor.jpg" alt="电压监测" title="电压监测">
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+	
+<div id="footer">
+Copyright@SEU-AMS Lab
+</div>
+</body>
+</html>

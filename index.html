@@ -1,0 +1,196 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  	<meta charset="utf-8">
+  	<title>剩余电流数据显示平台</title>
+	<!-- style sheet added for temporary styling -->
+	<style>
+		body {
+			height : 100%;
+			width : 100%;
+			margin : 0;
+			padding : 0;
+			display : block;
+			font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+			background-color:#7CAEEC;
+		}
+		.dataTables_wrapper {
+			padding-top:40px;
+			margin:auto;
+			border: 1px solid;
+			border-color: #7CAEEC;
+			width: 80%;
+			background-color : #7CAEEC;
+		}
+		#header{
+			margin: 0px;
+			padding:0px;
+			border:5px solid;
+			border-color: #73B7C5;
+			height: 130px;
+			width: 100%;
+			background-color: #7CAEEC;
+		}
+		#userInfo {
+			height: 40px;
+		}
+		#userInfo div {
+			float:right;
+		}
+		#logout{
+			margin-left:10px;
+			margin-right:10px;
+		}
+		#logoutBox:hover {
+			background-color: #4A91E9;
+		}
+		.welCom{
+			margin-top: 10px;
+			margin-bottom: 10px;
+			margin-right: 5px;
+		}
+		#logo {
+			height:121px;
+			width:600px;
+			margin:auto;
+		}
+		.SelectZone {
+			height: 90px;
+			margin: auto;
+		}
+		a:visited {
+			color: #000000;
+		}
+		a {
+			color: #000000;
+		}
+		.text_wrapper {
+			padding-top: 10px;
+			padding-bottom: 10px;
+			padding-left: 70px;
+			border: 2px solid;
+			border-color : #1837AF;
+			font-size: 25px;
+			font-family: "Lucida Console", Monaco, monospace;
+		}
+		.SelectZoneRow {
+			height: 50px;
+			width: 250px;
+			padding-top: 20px;
+			padding-bottom: 20px;
+			margin: auto;
+		}
+		#footer {
+			width: 80%;
+			margin-top: 20px;
+			margin-bottom: 20px;
+			margin-left: auto;
+			margin-right: auto;
+			clear:both;
+			text-align:center;
+			padding:5px;
+			font-family: "Lucida Console", Monaco, monospace;
+		}
+	</style>
+
+  	<!-- datepicker related local css source file-->
+  	<link rel="stylesheet" href="/jquery/jquery-ui-1.11.4.custom/jquery-ui.theme.min.css">
+  	<link rel="stylesheet" href="/jquery/jquery-ui-1.11.4.custom/jquery-ui.min.css">
+	<!-- datepicker related local js source file -->
+  	<script src="/jquery/jquery-ui-1.11.4.custom/external/jquery/jquery.js"></script>
+  	<script src="/jquery/jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
+  	<script src="/production/checkLogin.js"></script>
+  	
+  	<script>
+ 	$("document").ready(function() {
+		//check login or not
+		var val = getCookie("UserName");
+		//console.log("dan");
+		if(val == "")
+			window.location.replace("/login/login.html");
+
+		$( "#userName" ).html(val);
+
+		$("#history_wrapper").hover(
+			function(){
+				$(this).css({"border-color": "rgb(29, 124, 127)",
+							 "background-color":"rgb(0, 173, 255)"
+							 });
+			},
+			function(){
+				$(this).css({"background-color": "#7CAEEC",
+							 "border-color":"#1837AF"
+							});
+			}
+		);
+		$("#realtime_wrapper").hover(
+			function(){
+				$(this).css({"border-color": "rgb(29, 124, 127)",
+							 "background-color":"rgb(0, 173, 255)"});
+			},
+			function(){
+				$(this).css({"background-color": "#7CAEEC",
+							 "border-color": ""
+				});
+			}
+		);
+		$("#voltageMonitor_wrapper").hover(
+			function(){
+				$(this).css({"border-color": "rgb(29, 124, 127)",
+							 "background-color":"rgb(0, 173, 255)"});
+			},
+			function(){
+				$(this).css({"background-color": "#7CAEEC",
+							 "border-color": ""
+				});
+			}
+		);
+	});
+  	</script>
+
+</head>
+<body>
+<div id="body-wraper">
+	<div id="header">
+		<div id="logo">
+			<a href="/index.html">
+				<img src="/images/seu_head.jpg" alt="回首页" title="回首页">
+			</a>
+		</div>
+	</div>
+	<div id="userInfo">
+		<a href="/login/logout.html"><div id="logoutBox"><div class="welCom" id="logout">退出登录</div></div></a>
+		<div class="welCom" id="userName">anounimous</div>
+		<div class="welCom">欢迎您：</div>
+	</div>
+	
+
+	<div id="SelectZone">
+		<div class="SelectZoneRow"> 
+				<a style="text-decoration: none" href="/production/HistoryData.html">
+					<div class="text_wrapper" id="history_wrapper">历史数据</div>
+					<!-- <img src="images/HistoryData.jpg" alt="历史数据" title="历史数据"> -->
+				</a>
+			
+		</div>
+		<div class="SelectZoneRow">
+				<a href="/production/RealTimeData.html" style="text-decoration: none">
+					<div class="text_wrapper" id="realtime_wrapper">实时数据</div>
+					<!-- <img src="images/RealTimeData.jpg" alt="实时数据" title="实时数据"> -->
+				</a>
+		</div>
+		<div class="SelectZoneRow">
+				<a href="/production/currentMonitor.html" style="text-decoration: none">
+					<div class="text_wrapper" id="voltageMonitor_wrapper">电压监测</div>
+					<!-- <img src="images/currentMonitor.jpg" alt="电压监测" title="电压监测"> -->
+				</a>
+		</div>
+	</div>
+</div>
+	
+<div id="footer">
+Copyright@SEU-AMS Lab
+</div>
+</body>
+</html>

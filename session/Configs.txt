@@ -1,0 +1,13 @@
+--- enable session on start of request ---
+$vim /etc/php.ini
+find session.auto_start and set it to 1
+$service php-fpm restart
+
+or alternatively , we can leave php.ini unchanged , but we add
+session_start(), for each php script that will use session , this seems more
+efficient
+
+--- change group of session file ---
+the default session location is /var/lib/php/session/
+the default group of this folder is "apache" , damn it !!
+$chgrp nginx session
